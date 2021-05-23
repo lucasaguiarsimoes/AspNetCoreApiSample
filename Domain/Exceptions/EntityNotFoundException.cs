@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Matrix.QC.Domain.Exceptions
+namespace AspNetCoreApiSample.Domain.Exceptions
 {
     /// <summary>
     /// Exception que representa a entidade esperada não encontrada

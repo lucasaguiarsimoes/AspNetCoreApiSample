@@ -11,6 +11,6 @@ namespace AspNetCoreApiSample.Domain.Model
         public string Email { get; set; } = null!;
         public string Senha { get; set; } = null!;
 
-        public IEnumerable<UsuarioPermissao> Permissoes { get; set; } = null!;
+        public List<UsuarioPermissao> Permissoes { get; set; } = null!;
     }
 }

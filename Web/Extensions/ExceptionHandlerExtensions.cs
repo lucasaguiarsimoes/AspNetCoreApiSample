@@ -1,5 +1,5 @@
-﻿using AspNetCoreApiSample.Web.ViewModels;
-using Matrix.QC.Domain.Exceptions;
+﻿using AspNetCoreApiSample.Domain.Exceptions;
+using AspNetCoreApiSample.Web.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;

@@ -1,17 +1,26 @@
+using AspNetCoreApiSample.Database;
+using AspNetCoreApiSample.Database.Connection;
+using AspNetCoreApiSample.Database.Connection.Interface;
+using AspNetCoreApiSample.Database.Context;
+using AspNetCoreApiSample.Database.Context.Interface;
+using AspNetCoreApiSample.Database.Repositories.InMemory;
+using AspNetCoreApiSample.Database.Repository;
+using AspNetCoreApiSample.Repository;
 using AspNetCoreApiSample.Repository.Interface;
-using AspNetCoreApiSample.Repository.Repositories;
 using AspNetCoreApiSample.Service.Interface;
 using AspNetCoreApiSample.Service.Services;
 using AspNetCoreApiSample.Web.AutoMapper;
 using AspNetCoreApiSample.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Threading;
 
 namespace AspNetCoreApiSample.Web
 {
@@ -117,13 +126,33 @@ namespace AspNetCoreApiSample.Web
                 .AddScoped<IUsuarioService, UsuarioService>()
                 .AddScoped<ITokenJwtService, TokenJwtService>()
                 .AddScoped<IAuthenticationService, AuthenticationService>()
+                .AddScoped<ICryptographyService, CryptographySHA256Service>()
 
-                // Registra repositórios do sistema
-                // Cria como Singleton para que os dados em memoria existam enquanto o sistema estiver executando para simular um banco de dados InMemory
-                .AddSingleton<IUsuarioRepository, UsuarioRepositoryInMemory>()
+                // Repositorio para acesso InMemory de usuários caso se deseje não utilizar o banco de dados no sistema
+                //.AddSingleton<IUsuarioRepository, UsuarioRepositoryInMemory>()
+
+                // Registra repositories para acesso às entidades do sistema no banco de dados
+                .AddScoped<IUsuarioRepository, UsuarioRepository>()
+                .AddScoped<IUsuarioPermissaoRepository, UsuarioPermissaoRepository>()
+
+                // Registra os serviços principais de acesso ao banco de dados
+                .AddScoped<IUnitOfWork, UnitOfWork>()
+                .AddDbContext<IEntityContext, DefaultDbContext>(ServiceLifetime.Scoped, ServiceLifetime.Scoped)
+                .AddTransient<IConnection, SQLServerConnection>(s => new SQLServerConnection(this.Configuration.GetConnectionString("SQLServerSample")))
+
+                // Inclui logger para o uso pelo EF Core
+                .AddLogging(builder => builder
+                .AddConsole()
+                .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Information))
 
                 // Registra autenticação no sistema via token JWT
                 .AddJwtAuthorization();
+
+            // Faz uma construção específica dos services para um provider para executar os migrations do sistema
+            IServiceProvider serviceProvider = services.BuildServiceProvider();
+
+            // Executa os migrations pendentes, caso existam
+            serviceProvider.GetRequiredService<IUnitOfWork>().MigrateAsync(new CancellationToken()).Wait();
         }
     }
 }

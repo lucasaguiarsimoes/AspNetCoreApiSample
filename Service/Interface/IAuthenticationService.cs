@@ -14,10 +14,5 @@ namespace AspNetCoreApiSample.Service.Interface
         /// Realiza o login recebendo as credenciais e retornando o token
         /// </summary>
         Task<string> LoginAsync(LoginCommand loginCommand, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Recebe uma senha aberta e retorna a mesma senha criptografada
-        /// </summary>
-        string EncryptPassword(string password);
     }
 }

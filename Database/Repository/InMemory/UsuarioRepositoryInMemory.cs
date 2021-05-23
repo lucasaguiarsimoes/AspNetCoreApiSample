@@ -1,8 +1,8 @@
 ﻿using AspNetCoreApiSample.Domain.Enums;
+using AspNetCoreApiSample.Domain.Exceptions;
 using AspNetCoreApiSample.Domain.Model;
 using AspNetCoreApiSample.Domain.QueryResponses;
 using AspNetCoreApiSample.Repository.Interface;
-using Matrix.QC.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +10,11 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AspNetCoreApiSample.Repository.Repositories
+namespace AspNetCoreApiSample.Database.Repositories.InMemory
 {
+    /// <summary>
+    /// Repositório para acesso e uso do sistema sem utilização de banco de dados
+    /// </summary>
     public class UsuarioRepositoryInMemory : IUsuarioRepository
     {
         /// <summary>
@@ -19,7 +22,7 @@ namespace AspNetCoreApiSample.Repository.Repositories
         /// </summary>
         private readonly List<Usuario> _tabelaUsuariosInMemory = new List<Usuario>();
 
-        public async Task<long> AddAsync(Usuario usuario, CancellationToken cancellationToken)
+        public async Task AddAsync(Usuario usuario, CancellationToken cancellationToken)
         {
             if (this._tabelaUsuariosInMemory.Contains(usuario))
             {
@@ -35,7 +38,7 @@ namespace AspNetCoreApiSample.Repository.Repositories
             {
                 throw new EntityUniqueViolatedException("Já existe um outro usuário com o e-mail informado.");
             }
-            
+
             // Define o próximo ID para o usuário
             lock (this._tabelaUsuariosInMemory)
             {
@@ -46,10 +49,10 @@ namespace AspNetCoreApiSample.Repository.Repositories
 
             this._tabelaUsuariosInMemory.Add(usuario);
 
-            return await Task.FromResult(usuario.ID);
+            await Task.CompletedTask;
         }
 
-        public async Task UpdateAsync(Usuario usuario, CancellationToken cancellationToken)
+        public void Update(Usuario usuario)
         {
             Usuario? usuarioBanco = this._tabelaUsuariosInMemory.FirstOrDefault(u => u.ID == usuario.ID);
 
@@ -62,12 +65,9 @@ namespace AspNetCoreApiSample.Repository.Repositories
             {
                 throw new EntityNotFoundException("Não foi utilizada a referência de objeto interna da entidade para edição, por isso a edição não foi realizada.");
             }
-
-            // Por ser um banco 'InMemory', o usuário informado já vai ter sido atualizado
-            await Task.CompletedTask;
         }
 
-        public async Task RemoveAsync(Usuario usuario, CancellationToken cancellationToken)
+        public void Remove(Usuario usuario)
         {
             Usuario? usuarioBanco = this._tabelaUsuariosInMemory.FirstOrDefault(u => u.ID == usuario.ID);
 
@@ -77,8 +77,6 @@ namespace AspNetCoreApiSample.Repository.Repositories
             }
 
             this._tabelaUsuariosInMemory.Remove(usuarioBanco);
-
-            await Task.CompletedTask;
         }
 
         public async Task<bool> AnyAsync(CancellationToken cancellationToken)
