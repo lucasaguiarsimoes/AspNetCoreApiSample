@@ -46,6 +46,8 @@ namespace AspNetCoreApiSample.Service.Services
                 Nome = command.Nome,
                 Email = command.Email,
                 Senha = this._cryptographyService.Encrypt(command.Senha),
+                DataHoraUltimaAlteracaoSenha = DateTime.Now,
+                ExpiracaoSenhaAtivada = command.ExpiracaoSenhaAtivada,
                 Permissoes = command.Permissoes.Select(p => new UsuarioPermissao() { Permissao = p }).ToList(),
             };
 
@@ -74,12 +76,14 @@ namespace AspNetCoreApiSample.Service.Services
             usuario.Codigo = command.Codigo;
             usuario.Nome = command.Nome;
             usuario.Email = command.Email;
+            usuario.ExpiracaoSenhaAtivada = command.ExpiracaoSenhaAtivada;
             usuario.Permissoes = command.Permissoes.Select(p => new UsuarioPermissao() { Permissao = p }).ToList();
 
             // Se foi solicitada a troca da senha, criptografa a nova senha
             if (!string.IsNullOrWhiteSpace(command.Senha))
             {
                 usuario.Senha = this._cryptographyService.Encrypt(command.Senha);
+                usuario.DataHoraUltimaAlteracaoSenha = DateTime.Now;
             }
 
             // Aciona a atualização dos dados do usuário

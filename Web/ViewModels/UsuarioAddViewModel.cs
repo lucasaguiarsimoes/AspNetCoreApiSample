@@ -12,6 +12,7 @@ namespace AspNetCoreApiSample.Web.ViewModels
         public string Nome { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string Senha { get; set; } = null!;
+        public bool ExpiracaoSenhaAtivada { get; set; }
 
         public List<PermissaoSistemaEnum> Permissoes { get; set; } = null!;
     }

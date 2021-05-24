@@ -90,7 +90,7 @@ namespace AspNetCoreApiSample.Service.Services
         }
 
         /// <summary>
-        /// Gera a nova chave privada gerada
+        /// Gera a nova chave privada gerada automaticamente
         /// </summary>
         private static string GenerateNewPrivateKey()
         {

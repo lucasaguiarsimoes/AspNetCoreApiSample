@@ -64,6 +64,12 @@ namespace AspNetCoreApiSample.Service.Services
                 throw new UnauthorizedAccessException("Usuário ou senha inválidos.");
             }
 
+            // Verifica se a senha do usuário está expirada (Caso a expiração esteja habilitada e caso o usuário fique mais de 3 meses sem trocar sua senha)
+            if (usuario.ExpiracaoSenhaAtivada && usuario.DataHoraUltimaAlteracaoSenha.AddMonths(3) < DateTime.Now)
+            {
+                throw new UnauthorizedAccessException("Senha expirada. Peça ao administrador do sistema para redefinir sua senha.");
+            }
+
             // Se chegou aqui, a autenticação ocorreu com sucesso. Portanto, pode gerar o token de autenticação
             // Cria uma lista de claims para associar à identidade do usuário autenticado no token
             IEnumerable<Claim> claimsUsuario = GetAuthenticatedUserClaims(usuario);

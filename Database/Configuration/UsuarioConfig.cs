@@ -1,6 +1,7 @@
 ﻿using AspNetCoreApiSample.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace AspNetCoreApiSample.Database.Configuration
 {
@@ -22,6 +23,13 @@ namespace AspNetCoreApiSample.Database.Configuration
                 .IsRequired();
 
             builder.Property(u => u.Senha)
+                .IsRequired();
+
+            builder.Property(u => u.DataHoraUltimaAlteracaoSenha)
+                .IsRequired()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            builder.Property(u => u.ExpiracaoSenhaAtivada)
                 .IsRequired();
 
             // Índices
