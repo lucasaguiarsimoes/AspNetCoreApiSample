@@ -1,0 +1,37 @@
+<!-- Formulário para o Login -->
+<form
+  autocomplete="off"
+  [formGroup]="formLogin"
+  (ngSubmit)="onSubmit()">
+
+  <!-- Usuário -->
+  <div class="form-group">
+    <input
+      class="form-control"
+      placeholder="Usuário"
+      autocomplete="off"
+      [formGroup]="formLogin"
+      [formControlName]="'usuario'"
+      /> <!-- TO-DO: [ngClass]="{ 'invalid-feedback w-100': feedbackUsuario?.hasError() }" -->
+    <app-invalid-input-feedback #feedbackUsuario [form]="formLogin" [controlName]="'usuario'"></app-invalid-input-feedback>
+  </div>
+
+  <!-- Senha -->
+  <div class="form-group">
+    <input
+      class="form-control"
+      placeholder="Senha"
+      autocomplete="off"
+      type="password"
+      [formGroup]="formLogin"
+      [formControlName]="'senha'"
+      /> <!-- TO-DO: [ngClass]="{ 'invalid-feedback w-100': feedbackSenha?.hasError() }" -->
+    <app-invalid-input-feedback #feedbackSenha [form]="formLogin" [controlName]="'senha'"></app-invalid-input-feedback>
+  </div>
+
+  <!-- Botão de Login -->
+  <button type="submit" class="btn btn-primary btn-block">
+    Entrar
+  </button>
+
+</form>

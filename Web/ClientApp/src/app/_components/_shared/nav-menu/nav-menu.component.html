@@ -1,0 +1,96 @@
+<header>
+  <nav
+    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
+  >
+    <div class="container">
+      <!-- Link para retornar ao home da aplicação -->
+      <a class="navbar-brand" [routerLink]="['/']">AspNetCoreApiSample</a>
+
+      <!-- Botão de menu exibido para ocultar o menu em dispositivos menores -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target=".navbar-collapse"
+        aria-label="Toggle navigation"
+        [attr.aria-expanded]="isMenuExpanded"
+        (click)="toggle()"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Opções de menu: Apenas exibidas se o menu estiver em exibição -->
+      <div
+        class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
+        [ngClass]="{ show: isMenuExpanded }"
+      >
+
+        <!-- Itens do menu -->
+        <ul class="navbar-nav flex-grow">
+          <li
+            class="nav-item"
+            [routerLinkActive]="['link-active']"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <a class="nav-link text-dark" [routerLink]="['/']"
+              >Home</a
+            >
+          </li>
+
+          <!-- Varre todas as rotas que o usuário tem acesso para incluir como itens de menu -->
+          <li *ngFor="let item of menuItens" class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="[item.route]"
+              >{{item.name}}</a
+            >
+          </li>
+
+          <!-- Acesso ao Swagger -->
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" style="cursor: pointer" (click)="redirectSwagger()"
+              >Swagger API</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Bloco de componentes à direita do header -->
+      <div *ngIf="isAuthenticated()"
+        class="ml-auto d-flex justify-content-center align-items-center">
+
+        <!-- Ícone do usuário logado -->
+        <a
+          class="cursor-pointer ml-2 ml-sm-3"
+          #p="ngbPopover"
+          (click)="p.open()"
+          placement="left-top"
+          [ngbPopover]="popContent"
+          popoverClass="customPopover"
+          [closeDelay]="5000"
+          ><i class="fa fa-user fa-lg"></i>
+        </a>
+
+        <!-- Popover com as opções do que o usuário pode atuar sobre sua autenticação no momento -->
+        <ng-template #popContent>
+          <ul class="list-unstyled list-user">
+
+            <!-- Nome do usuário -->
+            <li>
+              <p class="m-2 px-3">
+                Usuario: <b>{{ getCurrentUserName() }}</b>
+              </p>
+            </li>
+
+            <!-- Linha divisória -->
+            <div class="dropdown-divider"></div>
+
+            <!-- Botão de Logout -->
+            <li>
+              <button (click)="logout()" class="btn btn-sm btn-light btn-outline-secondary btn-block">Sair</button>
+            </li>
+          </ul>
+        </ng-template>
+
+      </div>
+    </div>
+  </nav>
+</header>

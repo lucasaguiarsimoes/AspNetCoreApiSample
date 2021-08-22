@@ -1,0 +1,18 @@
+<div *ngIf="hasError()" [ngClass]="{ 'd-block': hasError() }" class="invalid-feedback w-100">
+
+  <!-- Avalia os erros específicos conhecidos com mensagens pré-definidas -->
+  <div *ngIf="control.hasError('pattern')">Formato inválido.</div>
+  <div *ngIf="control.hasError('required')">Obrigatório informar.</div>
+  <div *ngIf="control.hasError('email') && !errorDescriptionValid('email')">E-mail inválido.</div>
+  <div *ngIf="control.hasError('maxlength')">Formato inválido (máx. {{ control.getError('maxlength').requiredLength }}).</div>
+  <div *ngIf="control.hasError('max')">Valor inválido (max. {{ control.getError('max').max }}).</div>
+  <div *ngIf="control.hasError('minlength')">Valor inválido (min. {{ control.getError('minlength').requiredLength }}).</div>
+  <div *ngIf="control.hasError('min')">Valor inválido (min. {{ control.getError('min').min }}).</div>
+
+  <!-- Exibe as descrições nativas dos erros de formulário não previstos -->
+  <div *ngFor="let item of getControlErrors">
+    <div *ngIf="errorDescriptionValid(item)">
+      {{ getErrorDescription(item) }}
+    </div>
+  </div>
+</div>

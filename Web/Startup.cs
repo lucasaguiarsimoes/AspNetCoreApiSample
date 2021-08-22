@@ -100,6 +100,9 @@ namespace AspNetCoreApiSample.Web
 
                 spa.Options.SourcePath = "ClientApp";
 
+                // Insere um timeout de aguardo no startup do Angular para garantir que dê tempo do Angular subir
+                spa.Options.StartupTimeout = new TimeSpan(0, 1, 0);
+
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
