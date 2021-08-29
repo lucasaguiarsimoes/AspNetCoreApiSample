@@ -12,7 +12,7 @@
       autocomplete="off"
       [formGroup]="formLogin"
       [formControlName]="'usuario'"
-      /> <!-- TO-DO: [ngClass]="{ 'invalid-feedback w-100': feedbackUsuario?.hasError() }" -->
+    /> <!-- TO-DO: [ngClass]="{ 'invalid-feedback w-100': feedbackUsuario?.hasError() }" -->
     <app-invalid-input-feedback #feedbackUsuario [form]="formLogin" [controlName]="'usuario'"></app-invalid-input-feedback>
   </div>
 
@@ -25,7 +25,7 @@
       type="password"
       [formGroup]="formLogin"
       [formControlName]="'senha'"
-      /> <!-- TO-DO: [ngClass]="{ 'invalid-feedback w-100': feedbackSenha?.hasError() }" -->
+    /> <!-- TO-DO: [ngClass]="{ 'invalid-feedback w-100': feedbackSenha?.hasError() }" -->
     <app-invalid-input-feedback #feedbackSenha [form]="formLogin" [controlName]="'senha'"></app-invalid-input-feedback>
   </div>
 

@@ -1,1 +1,126 @@
-<p>usuario works!</p>
+<!-- Template utilizado como corpo do modal -->
+<ng-template #modalBody>
+
+  <!-- Formulário dos dados do usuário -->
+  <form [formGroup]="formUsuario">
+
+    <!-- Início dos campos do usuário para suportar quebras automáticas/responsivas dos campos -->
+    <div class="row">
+
+      <!-- Código -->
+      <div class="form-group col-12 col-md-6">
+        <label [for]="'codigo'" [innerHtml]="'Código'"></label>
+        <input
+          class="form-control"
+          [id]="'codigo'"
+          [formGroup]="formUsuario"
+          [formControlName]="'codigo'"
+          [attr.disabled]="pageMode === pageModeEnum.Read ? true : null"
+        />
+        <app-invalid-input-feedback #feedbackUsuario [form]="formUsuario" [controlName]="'codigo'"></app-invalid-input-feedback>
+      </div>
+
+      <!-- Senha -->
+      <div class="form-group col-12 col-md-6">
+        <label [for]="'senha'" [innerHtml]="'Senha'"></label>
+        <input
+          class="form-control"
+          autocomplete="off"
+          type="password"
+          [id]="'senha'"
+          [formGroup]="formUsuario"
+          [formControlName]="'senha'"
+          [attr.disabled]="pageMode === pageModeEnum.Read ? true : null"
+        />
+        <app-invalid-input-feedback #feedbackSenha [form]="formUsuario" [controlName]="'senha'"></app-invalid-input-feedback>
+      </div>
+
+      <!-- Nome -->
+      <div class="form-group col-12 col-md-6">
+        <label [for]="'nome'" [innerHtml]="'Nome'"></label>
+        <input
+          class="form-control"
+          [id]="'nome'"
+          [formGroup]="formUsuario"
+          [formControlName]="'nome'"
+          [attr.disabled]="pageMode === pageModeEnum.Read ? true : null"
+        />
+        <app-invalid-input-feedback #feedbackNome [form]="formUsuario" [controlName]="'nome'"></app-invalid-input-feedback>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group col-12 col-md-6">
+        <label [for]="'email'" [innerHtml]="'E-mail'"></label>
+        <input
+          class="form-control"
+          [id]="'email'"
+          [formGroup]="formUsuario"
+          [formControlName]="'email'"
+          [attr.disabled]="pageMode === pageModeEnum.Read ? true : null"
+        />
+        <app-invalid-input-feedback #feedbackEmail [form]="formUsuario" [controlName]="'email'"></app-invalid-input-feedback>
+      </div>
+
+      <!-- Expiração de Senha Ativada -->
+      <div class="form-group">
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            [id]="'expiracaoSenhaAtivada'"
+            [formGroup]="formUsuario"
+            [formControlName]="'expiracaoSenhaAtivada'"
+            [attr.disabled]="pageMode === pageModeEnum.Read ? true : null"
+          />
+          <label class="form-check-label" [for]="'expiracaoSenhaAtivada'" [innerHtml]="'Expiração de Senha Ativada'"></label>
+        </div>
+      </div>
+
+      <!-- Permissões -->
+      <h4 class="mt-4">Permissões</h4>
+      <div class="form-group">
+        <div class="form-check">
+
+          <!-- Lista todas as permissões existentes no sistema -->
+          <div *ngFor="let permissao of permissoesSistema">
+
+            <!-- Insere cada item de permissão como checkbox -->
+            <input
+              type="checkbox"
+              class="form-check-input"
+              [id]="getPermissionFormControl(permissao)"
+              [formGroup]="formUsuario"
+              [formControlName]="getPermissionFormControl(permissao)"
+              [attr.disabled]="pageMode === pageModeEnum.Read ? true : null"
+            />
+            <label class="form-check-label" [for]="getPermissionFormControl(permissao)" [innerHtml]="permissao.description"></label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</ng-template>
+
+<!-- Template utilizado como rodapé do modal -->
+<ng-template #modalFooter>
+
+  <!-- Botão de cancelamento/fechamento -->
+  <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="onCancel($event)"
+  >
+    {{ pageMode !== pageModeEnum.Read ? 'Cancelar' : 'Fechar' }}
+  </button>
+
+  <!-- Botão de submit/conclusão -->
+  <button
+    *ngIf="pageMode !== pageModeEnum.Read"
+    type="button"
+    class="btn btn-primary"
+    (click)="onSubmit($event)"
+  >
+    Salvar
+  </button>
+</ng-template>

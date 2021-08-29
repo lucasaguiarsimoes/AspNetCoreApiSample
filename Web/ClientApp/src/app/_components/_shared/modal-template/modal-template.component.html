@@ -1,0 +1,29 @@
+<!-- Cabeçalho do modal -->
+<div class="modal-header">
+
+  <!-- Título no cabeçalho do modal -->
+  <h4 class="modal-title" id="modal-title">{{ titulo }}</h4>
+
+  <!-- Botão para fechar o modal -->
+  <!-- O click aciona o NgbModal para fazer o dismiss/fechamento do componente -->
+  <button
+    type="button"
+    class="close"
+    aria-label="Close button"
+    aria-describedby="modal-title"
+    (click)="modal.dismiss('Cross click')"
+  >
+    <!-- ??? TO-DO: Entender isso aqui -->
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!-- Corpo/Conteúdo do modal -->
+<div class="modal-body">
+  <ng-container *ngTemplateOutlet="templateBody"></ng-container>
+</div>
+
+<!-- Rodapé do modal -->
+<div class="modal-footer">
+  <ng-container *ngTemplateOutlet="templateFooter"></ng-container>
+</div>

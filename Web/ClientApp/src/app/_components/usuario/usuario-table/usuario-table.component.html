@@ -1,0 +1,43 @@
+<div class="table-responsive">
+  <table class="table table-hover">
+
+    <!-- Cabeçalho do table -->
+    <thead>
+      <th>Código</th>
+      <th>E-mail</th>
+      <th>Nome</th>
+      <th>Expiração de Senha Ativada</th>
+      <th></th>
+    </thead>
+
+    <!-- Montagem das linhas do table -->
+    <tbody>
+
+      <!-- Varre cada usuário e monta uma linha completa do table -->
+      <tr
+        *ngFor="let usuario of usuarios"
+        [id]="usuario.id">
+
+        <!-- Monta cada célula da linha -->
+        <td>{{ usuario.codigo }}</td>
+        <td>{{ usuario.email }}</td>
+        <td>{{ usuario.nome }}</td>
+
+        <!-- Exibe a coluna como checkbox -->
+        <td><input type="checkbox" disabled value="{{ usuario.expiracaoSenhaAtivada }}"></td>
+
+        <!-- Coluna com o de ação sobre o usuário da linha do table -->
+        <td>
+          <button
+            class="btn btn-outline cursor-pointer float-right"
+            [ngbTooltip]="getRowActionTooltip()"
+            (click)="cellClick($event, usuario.id)">
+
+            <!-- Define o ícone utilizado de acordo com a permissão do usuário -->
+            <i [ngClass]="getRowActionIconClass()"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

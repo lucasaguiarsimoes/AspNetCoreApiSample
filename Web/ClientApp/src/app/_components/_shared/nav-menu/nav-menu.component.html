@@ -58,8 +58,8 @@
         class="ml-auto d-flex justify-content-center align-items-center">
 
         <!-- Ícone do usuário logado -->
-        <a
-          class="cursor-pointer ml-2 ml-sm-3"
+        <button
+          class="btn btn-outline cursor-pointer"
           #p="ngbPopover"
           (click)="p.open()"
           placement="left-top"
@@ -67,7 +67,7 @@
           popoverClass="customPopover"
           [closeDelay]="5000"
           ><i class="fa fa-user fa-lg"></i>
-        </a>
+        </button>
 
         <!-- Popover com as opções do que o usuário pode atuar sobre sua autenticação no momento -->
         <ng-template #popContent>

@@ -1,3 +1,8 @@
+<!-- Modal Usuario - Força o recarregamento do table de usuários após o salvamento de um usuário pelo modal -->
+<app-usuario #userComponent
+  (afterSave)="onSubmitFilter()">
+</app-usuario>
+
 <!-- Header da listagem de usuários -->
 <div class="row">
 
@@ -7,10 +12,11 @@
   </div>
 
   <!-- Botão de criação de novo usuário -->
-  <div class="col-auto">
+  <div class="col-auto" *ngIf="hasPermissaoCria">
     <button
       type="submit"
-      class="btn btn-primary">
+      class="btn btn-primary"
+      (click)="userComponent.openModalNew($event)">
       Novo Usuário
     </button>
   </div>
@@ -20,47 +26,68 @@
 <hr />
 
 <!-- Formulário de filtros da busca de usuários -->
-<form>
-  <div class="">
+<form
+  [formGroup]="formFilters"
+  (ngSubmit)="onSubmitFilter()">
+
+  <div class="row">
 
     <!-- Filtro de Código -->
-    <div class="form-group">
-      <label [for]="'codigo'" [innerHtml]="'Código'"></label>
+    <div class="form-group col-12 col-md-6 col-xl-4">
+      <label [for]="'codigoFiltro'" [innerHtml]="'Código'"></label>
       <input
         class="form-control"
-        [id]="'codigo'"
-        />
+        [id]="'codigoFiltro'"
+        [formGroup]="formFilters"
+        [formControlName]="'codigoFiltro'"
+      />
     </div>
 
     <!-- Filtro de Nome -->
-    <div class="form-group">
-      <label [for]="'nome'" [innerHtml]="'Nome'"></label>
+    <div class="form-group col-12 col-md-6 col-xl-4">
+      <label [for]="'nomeFiltro'" [innerHtml]="'Nome'"></label>
       <input
         class="form-control"
-        [id]="'nome'"
-        />
+        [id]="'nomeFiltro'"
+        [formGroup]="formFilters"
+        [formControlName]="'nomeFiltro'"
+      />
     </div>
 
     <!-- Filtro de Email -->
-    <div class="form-group">
-      <label [for]="'email'" [innerHtml]="'E-mail'"></label>
+    <div class="form-group col-12 col-md-6 col-xl-4">
+      <label [for]="'emailFiltro'" [innerHtml]="'E-mail'"></label>
       <input
         class="form-control"
-        [id]="'email'"
-        />
+        [id]="'emailFiltro'"
+        [formGroup]="formFilters"
+        [formControlName]="'emailFiltro'"
+      />
     </div>
   </div>
+
+  <!-- Espaço para ações sobre a busca -->
+  <div class="row">
+
+    <!-- Botão para acionar a busca de usuários -->
+    <div class="col">
+      <button
+        type="submit"
+        class="btn btn-primary">
+        Filtrar
+      </button>
+    </div>
+  </div>
+
 </form>
 
-<!-- Header da listagem de usuários -->
-<div class="row">
+<!-- Header da listagem de usuários. Apenas exibe a lista caso a busca tenha sido feita alguma vez -->
+<div *ngIf="showResponseList">
 
-  <!-- Botão de criação de novo usuário -->
-  <div class="col">
-    <button
-      type="submit"
-      class="btn btn-primary">
-      Filtrar
-    </button>
-  </div>
+  <!-- Insere a table com os usuários buscados -->
+  <!-- Prepara o evento de clique para edição/consulta para cada usuário/linha do table -->
+  <app-usuario-table
+    [usuarios]="usuarios"
+    (eventCellClick)="userComponent.openModalUsuario($event)">
+  </app-usuario-table>
 </div>

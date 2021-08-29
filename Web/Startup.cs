@@ -88,6 +88,9 @@ namespace AspNetCoreApiSample.Web
 
             app.UseEndpoints(endpoints =>
             {
+                //// Adiciona routas para os controllers sem especificar uma rota convencional
+                //// já que todos os controles da aplicação estabelecem sua própria rota explicitamente
+                //endpoints.MapControllers();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");

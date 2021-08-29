@@ -101,7 +101,7 @@ namespace AspNetCoreApiSample.Web.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpPost]
         [AuthorizeWithRole(PermissaoSistemaEnum.UsuarioRemove)]
         public async Task<IActionResult> Remove([FromBody] UsuarioRemoveViewModel usuarioViewModel, CancellationToken cancellationToken)
         {

@@ -12,6 +12,8 @@ namespace AspNetCoreApiSample.Web.ViewModels
         public string Codigo { get; set; } = null!;
         public string Nome { get; set; } = null!;
         public string Email { get; set; } = null!;
+        public DateTime DataHoraUltimaAlteracaoSenha { get; set; }
+        public bool ExpiracaoSenhaAtivada { get; set; }
 
         public IEnumerable<PermissaoSistemaEnum> Permissoes { get; set; } = null!;
     }
