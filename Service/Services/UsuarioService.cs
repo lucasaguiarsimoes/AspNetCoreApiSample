@@ -120,5 +120,10 @@ namespace AspNetCoreApiSample.Service.Services
         {
             return await this._uow.UsuarioRepository.GetAllAsync(cancellationToken);
         }
+
+        public async Task<IEnumerable<UsuarioQueryResponseGetFilteredList>> GetFilteredListAsync(UsuarioQueryGetFilteredList query, CancellationToken cancellationToken)
+        {
+            return await this._uow.UsuarioRepository.GetFilteredListAsync(query, cancellationToken);
+        }
     }
 }

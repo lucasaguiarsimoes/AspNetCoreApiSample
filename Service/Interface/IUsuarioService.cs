@@ -35,5 +35,10 @@ namespace AspNetCoreApiSample.Service.Interface
         /// Carrega todos os usuários do sistema
         /// </summary>
         Task<IEnumerable<UsuarioQueryResponse>> GetAllAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Retorna lista com alguns dados de usuarios
+        /// </summary>
+        Task<IEnumerable<UsuarioQueryResponseGetFilteredList>> GetFilteredListAsync(UsuarioQueryGetFilteredList query, CancellationToken cancellationToken);
     }
 }

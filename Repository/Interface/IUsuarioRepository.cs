@@ -1,4 +1,5 @@
 ﻿using AspNetCoreApiSample.Domain.Model;
+using AspNetCoreApiSample.Domain.Queries;
 using AspNetCoreApiSample.Domain.QueryResponses;
 using AspNetCoreApiSample.Repository.Interface.Common;
 using System;
@@ -26,5 +27,10 @@ namespace AspNetCoreApiSample.Repository.Interface
         /// Retorna todos os usuários existentes no sistema
         /// </summary>
         Task<IEnumerable<UsuarioQueryResponse>> GetAllAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Retorna os usuários listados que passarem pelo filtro fornecido
+        /// </summary>
+        Task<IEnumerable<UsuarioQueryResponseGetFilteredList>> GetFilteredListAsync(UsuarioQueryGetFilteredList query, CancellationToken cancellationToken);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AspNetCoreApiSample.Domain.Enums;
 using AspNetCoreApiSample.Domain.Exceptions;
 using AspNetCoreApiSample.Domain.Model;
+using AspNetCoreApiSample.Domain.Queries;
 using AspNetCoreApiSample.Domain.QueryResponses;
 using AspNetCoreApiSample.Repository.Interface;
 using System;
@@ -109,6 +110,23 @@ namespace AspNetCoreApiSample.Database.Repositories.InMemory
                 Email = u.Email,
                 Permissoes = u.Permissoes.Select(p => p.Permissao)
             }));
+        }
+
+        public async Task<IEnumerable<UsuarioQueryResponseGetFilteredList>> GetFilteredListAsync(UsuarioQueryGetFilteredList query, CancellationToken cancellationToken)
+        {
+            return await Task.FromResult(this._tabelaUsuariosInMemory
+                .Where(u =>
+                    (string.IsNullOrEmpty(query.Codigo) || u.Codigo.Contains(query.Codigo)) &&
+                    (string.IsNullOrEmpty(query.Nome) || u.Nome.Contains(query.Nome)) &&
+                    (string.IsNullOrEmpty(query.Email) || u.Email.Contains(query.Email)))
+                .Select(u => new UsuarioQueryResponseGetFilteredList()
+                {
+                    ID = u.ID,
+                    Codigo = u.Codigo,
+                    Nome = u.Nome,
+                    Email = u.Email,
+                    ExpiracaoSenhaAtivada = u.ExpiracaoSenhaAtivada,
+                }));
         }
     }
 }

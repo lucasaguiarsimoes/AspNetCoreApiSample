@@ -48,6 +48,20 @@ namespace AspNetCoreApiSample.Web.Controllers
             return Ok(this._mapper.Map<UsuarioResponseViewModel>(usuario));
         }
 
+        [HttpPost]
+        [AuthorizeWithRole(PermissaoSistemaEnum.UsuarioConsulta)]
+        public async Task<ActionResult<IEnumerable<UsuarioResponseViewModel>>> GetFilteredList(UsuarioGetFilteredListRequestViewModel request, CancellationToken cancellationToken)
+        {
+            // Cria mapeamento da ViewModel para objeto
+            UsuarioQueryGetFilteredList query = this._mapper.Map<UsuarioQueryGetFilteredList>(request);
+
+            // Aciona a busca através do service
+            IEnumerable<UsuarioQueryResponseGetFilteredList> usuarios = await this._usuarioService.GetFilteredListAsync(query, cancellationToken);
+
+            // Monta o ViewModel a partir da busca realizada
+            return Ok(usuarios.Select(c => this._mapper.Map<UsuarioGetFilteredListResponseViewModel>(c)));
+        }
+
         [HttpGet]
         [AuthorizeWithRole(PermissaoSistemaEnum.UsuarioConsulta)]
         public async Task<ActionResult<IEnumerable<UsuarioResponseViewModel>>> GetAll(CancellationToken cancellationToken)

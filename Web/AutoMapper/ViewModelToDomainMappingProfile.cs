@@ -1,4 +1,5 @@
 ﻿using AspNetCoreApiSample.Domain.Commands;
+using AspNetCoreApiSample.Domain.Queries;
 using AspNetCoreApiSample.Web.ViewModels;
 using AutoMapper;
 
@@ -11,6 +12,7 @@ namespace AspNetCoreApiSample.Web.AutoMapper
             CreateMap<UsuarioAddViewModel, UsuarioCommandAdd>();
             CreateMap<UsuarioEditViewModel, UsuarioCommandEdit>();
             CreateMap<UsuarioRemoveViewModel, UsuarioCommandRemove>();
+            CreateMap<UsuarioGetFilteredListRequestViewModel, UsuarioQueryGetFilteredList>();
 
             CreateMap<LoginViewModel, LoginCommand>();
         }

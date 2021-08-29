@@ -14,6 +14,7 @@ namespace AspNetCoreApiSample.Web.AutoMapper
             CreateMap<Usuario, UsuarioResponseViewModel>();
             CreateMap<UsuarioPermissao, PermissaoSistemaEnum>().ConstructUsing(e => e.Permissao);
             CreateMap<UsuarioQueryResponse, UsuarioResponseViewModel>();
+            CreateMap<UsuarioQueryResponseGetFilteredList, UsuarioGetFilteredListResponseViewModel>();
         }
     }
 }

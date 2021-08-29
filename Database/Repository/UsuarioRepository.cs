@@ -1,6 +1,7 @@
 ﻿using AspNetCoreApiSample.Database.Context.Interface;
 using AspNetCoreApiSample.Database.Repository.Common;
 using AspNetCoreApiSample.Domain.Model;
+using AspNetCoreApiSample.Domain.Queries;
 using AspNetCoreApiSample.Domain.QueryResponses;
 using AspNetCoreApiSample.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,20 @@ namespace AspNetCoreApiSample.Database.Repository
                 .FirstOrDefaultAsync(u => u.ID == id);
         }
 
+        public async Task<Usuario?> GetByCodigoAsync(string codigo, CancellationToken cancellationToken)
+        {
+            return await this.DbSet
+                .Include(u => u.Permissoes)
+                .FirstOrDefaultAsync(u => u.Codigo == codigo);
+        }
+
+        public async Task<Usuario?> GetByEmailAsync(string email, CancellationToken cancellationToken)
+        {
+            return await this.DbSet
+                .Include(u => u.Permissoes)
+                .FirstOrDefaultAsync(u => u.Email == email);
+        }
+
         public async Task<IEnumerable<UsuarioQueryResponse>> GetAllAsync(CancellationToken cancellationToken)
         {
             return await this.DbSet
@@ -41,18 +56,22 @@ namespace AspNetCoreApiSample.Database.Repository
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Usuario?> GetByCodigoAsync(string codigo, CancellationToken cancellationToken)
+        public async Task<IEnumerable<UsuarioQueryResponseGetFilteredList>> GetFilteredListAsync(UsuarioQueryGetFilteredList query, CancellationToken cancellationToken)
         {
             return await this.DbSet
-                .Include(u => u.Permissoes)
-                .FirstOrDefaultAsync(u => u.Codigo == codigo);
-        }
-
-        public async Task<Usuario?> GetByEmailAsync(string email, CancellationToken cancellationToken)
-        {
-            return await this.DbSet
-                .Include(u => u.Permissoes)
-                .FirstOrDefaultAsync(u => u.Email == email);
+                .Where(u =>
+                    (string.IsNullOrEmpty(query.Codigo) || u.Codigo.Contains(query.Codigo)) &&
+                    (string.IsNullOrEmpty(query.Nome) || u.Nome.Contains(query.Nome)) &&
+                    (string.IsNullOrEmpty(query.Email) || u.Email.Contains(query.Email)))
+                .Select(u => new UsuarioQueryResponseGetFilteredList()
+                {
+                    ID = u.ID,
+                    Codigo = u.Codigo,
+                    Nome = u.Nome,
+                    Email = u.Email,
+                    ExpiracaoSenhaAtivada = u.ExpiracaoSenhaAtivada,
+                })
+                .ToListAsync(cancellationToken);
         }
     }
 }
